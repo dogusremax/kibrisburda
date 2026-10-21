@@ -43,8 +43,8 @@ h2{font:800 clamp(1.5rem,4.4vw,2.1rem)/1.15 var(--f-head);letter-spacing:-.03em;
 h3{margin:0 0 6px;font:800 1.1rem var(--f-head);color:#fff}
 strong{color:#fff}
 ul,ol{padding-inline-start:22px}li{margin:7px 0}li::marker{color:var(--gold)}
-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.96rem;display:block;overflow-x:auto;border:1px solid var(--line);border-radius:14px}
-thead,tbody{display:table;width:100%;border-collapse:collapse}
+.tw{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:14px}
+table{width:100%;border-collapse:collapse;font-size:.96rem}
 th,td{text-align:start;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
 tbody tr:last-child>*{border-bottom:0}
 thead th{background:rgba(233,194,122,.1);color:var(--gold);font:600 .74rem var(--f-mono);letter-spacing:.12em;text-transform:uppercase}
@@ -92,7 +92,7 @@ footer a{color:var(--muted)}
 <main>
 <article class="card">
 <h2>Masraflar ve ödeme zamanları</h2>
-<table>
+<div class="tw"><table>
 <thead><tr><th>Masraf</th><th>Oran / tutar</th><th>Ne zaman?</th></tr></thead>
 <tbody>
 <tr><td>Damga (pul) vergisi</td><td>%0,5</td><td>Satış sözleşmesi imzalanırken (21 gün içinde)</td></tr>
@@ -102,11 +102,11 @@ footer a{color:var(--muted)}
 <tr><td>Trafo katılım bedeli</td><td>Müteahhit belirler</td><td>Daire tesliminde</td></tr>
 <tr><td>Avukatlık ücreti</td><td>Avukatla belirlenir</td><td>Süreç boyunca</td></tr>
 </tbody>
-</table>
+</table></div>
 <p class="note">İndirimli tapu harcı ilk konut alımında uygulanır; sonraki alımlarda oran daha yüksektir (genellikle %6). Oranlar ve harç tutarları değişebilir; güncel rakamları avukatınızdan teyit edin.</p>
 
 <h2>Örnek hesap: £185.000'lık daire</h2>
-<table>
+<div class="tw"><table>
 <thead><tr><th>Kalem</th><th>Tutar</th></tr></thead>
 <tbody>
 <tr><td>Damga vergisi (%0,5)</td><td>£925</td></tr>
@@ -114,7 +114,7 @@ footer a{color:var(--muted)}
 <tr><td>KDV (%5)</td><td>£9.250</td></tr>
 <tr><th>Yüzdeli kalemler toplamı</th><th>£17.575 (≈ %9,5)</th></tr>
 </tbody>
-</table>
+</table></div>
 <p>Bunlara onay harcı, trafo bedeli ve avukatlık ücreti eklenir. <a href="/#masraf">Kendi satış bedelinizle hesaplayın →</a></p>
 
 <h2>Adım adım ödeme süreci</h2>

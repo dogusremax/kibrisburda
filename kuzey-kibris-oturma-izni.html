@@ -43,8 +43,8 @@ h2{font:800 clamp(1.5rem,4.4vw,2.1rem)/1.15 var(--f-head);letter-spacing:-.03em;
 h3{margin:0 0 6px;font:800 1.1rem var(--f-head);color:#fff}
 strong{color:#fff}
 ul,ol{padding-inline-start:22px}li{margin:7px 0}li::marker{color:var(--gold)}
-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.96rem;display:block;overflow-x:auto;border:1px solid var(--line);border-radius:14px}
-thead,tbody{display:table;width:100%;border-collapse:collapse}
+.tw{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:14px}
+table{width:100%;border-collapse:collapse;font-size:.96rem}
 th,td{text-align:start;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
 tbody tr:last-child>*{border-bottom:0}
 thead th{background:rgba(233,194,122,.1);color:var(--gold);font:600 .74rem var(--f-mono);letter-spacing:.12em;text-transform:uppercase}
@@ -92,7 +92,7 @@ footer a{color:var(--muted)}
 <main>
 <article class="card">
 <h2>Kaç yıllık izin alırsınız?</h2>
-<table>
+<div class="tw"><table>
 <thead><tr><th>Belgeniz</th><th>Taşınmaz değeri</th><th>İzin süresi</th><th>Gelir şartı</th></tr></thead>
 <tbody>
 <tr><td rowspan="2">Tapu koçanı kendi adınıza</td><td>£300.000 ve üzeri</td><td><strong>10 yıl</strong></td><td>Yok</td></tr>
@@ -100,7 +100,7 @@ footer a{color:var(--muted)}
 <tr><td rowspan="2">Pullu ve onaylı satış sözleşmesi</td><td>£300.000 ve üzeri</td><td>5 yıl</td><td>Yok</td></tr>
 <tr><td>£300.000 altı</td><td>5 yıl</td><td>Aylık 1 asgari ücret</td></tr>
 </tbody>
-</table>
+</table></div>
 <p class="note">Birden fazla taşınmazınız varsa toplam değer sayılır. £300.000 veya euro, dolar ya da TL cinsinden karşılığı esas alınır.</p>
 
 <h2>Bilmeniz gerekenler</h2>
