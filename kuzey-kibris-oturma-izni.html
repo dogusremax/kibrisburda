@@ -70,6 +70,8 @@ thead th{background:rgba(233,194,122,.1);color:var(--gold);font:600 .74rem var(-
 footer{text-align:center;color:var(--muted);font-size:.85rem;padding:26px 16px 44px;border-top:1px solid var(--line)}
 footer a{color:var(--muted)}
 @media(max-width:640px){body{font-size:16px}.cmp{grid-template-columns:1fr}.card{padding:22px 18px}.cta{padding:24px 18px}.btn{flex:1 1 100%}}
+@media (max-width:560px){table.stk thead{display:none}table.stk,table.stk tbody,table.stk tr,table.stk td{display:block;width:100%}table.stk tr{padding:6px 0;border-bottom:1px solid var(--line)}table.stk tbody tr:last-child{border-bottom:0}table.stk td{border:0;padding:6px 14px;display:grid;grid-template-columns:42% 1fr;gap:10px}table.stk td::before{content:attr(data-label);color:var(--gold);font:600 .68rem/1.9 var(--f-mono);letter-spacing:.1em;text-transform:uppercase}table.stk td.dup{display:grid}}
+td.dup{display:none}
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "RealEstateAgent", "@id": "https://kibrisburda.com/#remax-dogus", "name": "RE/MAX Doğuş · Kuzey Kıbrıs Masası", "url": "https://kibrisburda.com/", "telephone": "+90 216 315 15 15", "logo": "https://dogusportal.com/assets/dogus-logo.png", "address": {"@type": "PostalAddress", "addressLocality": "Kadıköy", "addressRegion": "İstanbul", "streetAddress": "Fikirtepe", "addressCountry": "TR"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Kuzey Kıbrıs'ta ev alarak oturma izni", "description": "KKTC'de ev alana oturma izni 2026: £300.000 ve üzeri tapulu alımda 10 yıl, altında 5 yıl. Tapu ve satış sözleşmesine göre şartlar, gelir şartı ve aile izni.", "inLanguage": "tr", "datePublished": "2026-10-21", "dateModified": "2026-10-21", "mainEntityOfPage": "https://kibrisburda.com/kuzey-kibris-oturma-izni.html", "image": "https://dogusportal.com/assets/kibris/og-kibris.jpg", "author": {"@type": "Organization", "name": "RE/MAX Doğuş", "url": "https://kibrisburda.com/"}, "publisher": {"@id": "https://kibrisburda.com/#remax-dogus"}}</script>
@@ -92,13 +94,13 @@ footer a{color:var(--muted)}
 <main>
 <article class="card">
 <h2>Kaç yıllık izin alırsınız?</h2>
-<div class="tw"><table>
+<div class="tw"><table class="stk">
 <thead><tr><th>Belgeniz</th><th>Taşınmaz değeri</th><th>İzin süresi</th><th>Gelir şartı</th></tr></thead>
 <tbody>
-<tr><td rowspan="2">Tapu koçanı kendi adınıza</td><td>£300.000 ve üzeri</td><td><strong>10 yıl</strong></td><td>Yok</td></tr>
-<tr><td>£300.000 altı</td><td>5 yıl</td><td>Yok</td></tr>
-<tr><td rowspan="2">Pullu ve onaylı satış sözleşmesi</td><td>£300.000 ve üzeri</td><td>5 yıl</td><td>Yok</td></tr>
-<tr><td>£300.000 altı</td><td>5 yıl</td><td>Aylık 1 asgari ücret</td></tr>
+<tr><td rowspan="2" data-label="Belgeniz">Tapu koçanı kendi adınıza</td><td data-label="Taşınmaz değeri">£300.000 ve üzeri</td><td data-label="İzin süresi"><strong>10 yıl</strong></td><td data-label="Gelir şartı">Yok</td></tr>
+<tr><td class="dup" data-label="Belgeniz">Tapu koçanı kendi adınıza</td><td data-label="Taşınmaz değeri">£300.000 altı</td><td data-label="İzin süresi">5 yıl</td><td data-label="Gelir şartı">Yok</td></tr>
+<tr><td rowspan="2" data-label="Belgeniz">Pullu ve onaylı satış sözleşmesi</td><td data-label="Taşınmaz değeri">£300.000 ve üzeri</td><td data-label="İzin süresi">5 yıl</td><td data-label="Gelir şartı">Yok</td></tr>
+<tr><td class="dup" data-label="Belgeniz">Pullu ve onaylı satış sözleşmesi</td><td data-label="Taşınmaz değeri">£300.000 altı</td><td data-label="İzin süresi">5 yıl</td><td data-label="Gelir şartı">Aylık 1 asgari ücret</td></tr>
 </tbody>
 </table></div>
 <p class="note">Birden fazla taşınmazınız varsa toplam değer sayılır. £300.000 veya euro, dolar ya da TL cinsinden karşılığı esas alınır.</p>
