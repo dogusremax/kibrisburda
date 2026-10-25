@@ -1,0 +1,67 @@
+name: akasya-bake
+on:
+  push:
+    branches: ['claude/**']
+    paths: ['_bake/ids.txt']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: { group: akasya-bake, cancel-in-progress: false }
+jobs:
+  prep:
+    runs-on: ubuntu-latest
+    outputs: { ids: '${{ steps.m.outputs.ids }}' }
+    steps:
+      - uses: actions/checkout@v4
+        with: { sparse-checkout: _bake }
+      - id: m
+        run: echo "ids=$(grep -v '^\s*$' _bake/ids.txt | python3 -c 'import sys,json;print(json.dumps([l.strip() for l in sys.stdin]))')" >> $GITHUB_OUTPUT
+  bake:
+    needs: prep
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix: { id: '${{ fromJson(needs.prep.outputs.ids) }}' }
+    steps:
+      - uses: actions/checkout@v4
+        with: { sparse-checkout: _bake }
+      - uses: actions/cache@v4
+        id: bc
+        with: { path: /opt/blender, key: blender-5.1.2 }
+      - if: steps.bc.outputs.cache-hit != 'true'
+        run: |
+          sudo mkdir -p /opt/blender && sudo chown $USER /opt/blender
+          curl -sSL https://download.blender.org/release/Blender5.1/blender-5.1.2-linux-x64.tar.xz | tar -xJ -C /opt/blender --strip-components=1
+      - run: |
+          sudo chown -R $USER /opt/blender || true
+          sudo apt-get install -y -qq libegl1 libxkbcommon0 libsm6 libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 >/dev/null || true
+          pip install -q pillow
+          npm i -g gltfpack >/dev/null
+      - name: bake
+        run: |
+          cd _bake; id=${{ matrix.id }}
+          python3 mksrc.py $id
+          mkdir -p out/$id
+          /opt/blender/blender -b --python bake_glb.py -- $id out/$id/model.glb 4096 64 > out/$id/log 2>&1 || (tail -60 out/$id/log; exit 1)
+          gltfpack -i out/$id/model.glb -o out/$id/model.p.glb -cc -kn
+          mv out/$id/model.p.glb out/$id/model.glb; rm -f out/$id/model.glb.exr out/$id/model.glb.png
+          tail -3 out/$id/log; ls -la out/$id
+      - uses: actions/upload-artifact@v4
+        with: { name: 'm-${{ matrix.id }}', path: '_bake/out/${{ matrix.id }}', retention-days: 3 }
+  collect:
+    needs: bake
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { path: arts, pattern: 'm-*' }
+      - run: |
+          mkdir -p _bake/glb
+          for d in arts/m-*; do id=${d#arts/m-}; [ -f $d/model.glb ] || continue
+            mkdir -p _bake/glb/$id; cp $d/model.glb $d/model.json _bake/glb/$id/; done
+          git config user.name github-actions; git config user.email github-actions@users.noreply.github.com
+          git add _bake/glb; git commit -m "Akasya 3D: pişen modeller" || exit 0
+          for i in 1 2 3 4 5; do git pull --rebase origin ${GITHUB_REF_NAME} && git push origin HEAD:${GITHUB_REF_NAME} && break; sleep 5; done
