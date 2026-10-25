@@ -41,3 +41,5 @@ kent-24
 kent-25
 kent-26
 kent-27
+gol-13
+gol-14
