@@ -49,6 +49,17 @@ H = 2.25           # duvar yüksekliği
 FL = 0.0           # döşeme üst kotu
 
 ROOMS = {r[0]: r for r in PLAN['rooms']}
+def other_room(px, py, me):
+    for r in PLAN['rooms']:
+        if r is me: continue
+        p = poly(r); inside = False
+        for i in range(len(p)):
+            a, b = p[i], p[(i + 1) % len(p)]
+            if (a[1] > py) != (b[1] > py) and px < (b[0] - a[0]) * (py - a[1]) / (b[1] - a[1] + 1e-9) + a[0]:
+                inside = not inside
+        if inside: return True
+    return False
+
 def room_of(px, py):
     for r in PLAN['rooms']:
         p = poly(r); inside = False
@@ -343,6 +354,12 @@ def segments():
                 if sg[1] - sg[0] > (1 if (sg[2] and sg[3]) else 0.3 * PPM):
                     ext = T / 2 * PPM
                     t0 = sg[0] - (ext if sg[2] else 0); t1 = sg[1] + (ext if sg[3] else 0)
+                    if bal:
+                        # iki açık alan (teras/bahçe/havuz) arasındaki ya da bir odaya bitişik kenara korkuluk konmaz;
+                        # korkuluk yalnız dış kenarda (öbür tarafta oda yoksa)
+                        tm = (sg[0] + sg[1]) / 2; o = 0.3 * PPM
+                        mx, my = a[0] + ux * tm, a[1] + uy * tm
+                        if any(other_room(mx + s * uy * o, my - s * ux * o, r) for s in (1, -1)): continue
                     (rails if bal else walls).append(((a[0] + ux * t0, a[1] + uy * t0), (a[0] + ux * t1, a[1] + uy * t1)))
     return merge(walls), merge(rails)
 
