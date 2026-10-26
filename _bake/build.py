@@ -328,10 +328,14 @@ def seg_param(a, b, p):
 
 def segments():
     TOL = 0.22 * PPM
-    cuts = [cut_geom(k) for k in PLAN['doors'] + PLAN['opens'] + PLAN['wins']]
+    cuts_all = [cut_geom(k) for k in PLAN['doors'] + PLAN['opens'] + PLAN['wins']]
+    cuts_gal = [cut_geom(k) for k in PLAN['doors'] + PLAN['wins']]
     walls, rails = [], []
     for r in PLAN['rooms']:
         p = poly(r); bal = r[3] == 'balk'
+        # galeri boşluğu: alt kata bakan kenarı açık geçiş olsa da korkuluklu
+        gal = bal and 'aleri' in r[1]
+        cuts = cuts_gal if gal else cuts_all
         for i in range(len(p)):
             a, b = p[i], p[(i + 1) % len(p)]
             if a[0] == b[0] and a[1] == b[1]: continue
@@ -359,7 +363,7 @@ def segments():
                         # korkuluk yalnız dış kenarda (öbür tarafta oda yoksa)
                         tm = (sg[0] + sg[1]) / 2; o = 0.3 * PPM
                         mx, my = a[0] + ux * tm, a[1] + uy * tm
-                        if any(other_room(mx + s * uy * o, my - s * ux * o, r) for s in (1, -1)): continue
+                        if not gal and any(other_room(mx + s * uy * o, my - s * ux * o, r) for s in (1, -1)): continue
                     (rails if bal else walls).append(((a[0] + ux * t0, a[1] + uy * t0), (a[0] + ux * t1, a[1] + uy * t1)))
     return merge(walls), merge(rails)
 
