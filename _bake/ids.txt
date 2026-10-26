@@ -1,3 +1,12 @@
+gol-4
+gol-5
+gol-8
+gol-9
+gol-13
+gol-14
+gol-15
+gol-17
+gol-21
 koru-1
 koru-2
 koru-3
@@ -10,3 +19,9 @@ koru-12
 koru-17
 koru-26
 koru-27
+ortak-1
+ortak-3
+ortak-4
+ortak-5
+ortak-9
+ortak-13
