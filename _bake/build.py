@@ -521,10 +521,16 @@ def build_floors():
         if len(obs) < 2: continue
         base = obs[0]
         for o in obs[1:]:
-            md = base.modifiers.new('u', 'BOOLEAN'); md.operation = 'UNION'; md.solver = 'EXACT'; md.object = o
+            md = base.modifiers.new('u', 'BOOLEAN'); md.operation = 'UNION'; md.solver = 'MANIFOLD'; md.object = o
             bpy.context.view_layer.objects.active = base
+            ba = lambda ob: sum(p.area for p in ob.data.polygons if p.normal.z < -0.9)
+            a0 = max(ba(base), ba(o))
             bpy.ops.object.modifier_apply(modifier=md.name)
+            if ba(base) < a0 * 0.999:
+                print('BIRLESTIRME_HATASI', pre, o.name, flush=True)
             bpy.data.objects.remove(o, do_unlink=True)
+        _bm = bmesh.new(); _bm.from_mesh(base.data)
+        print('KAIDE', pre, len(base.data.polygons), 'acik_kenar', sum(1 for e in _bm.edges if not e.is_manifold), flush=True); _bm.free()
     for r in PLAN['rooms']:
         p = poly(r); w = max(q[0] for q in p) - min(q[0] for q in p); h = max(q[1] for q in p) - min(q[1] for q in p)
         if r[3] == 'wood':
