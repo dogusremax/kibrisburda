@@ -356,7 +356,8 @@ def segments():
             for sg in segs:
                 # geçiş/kapı kenarında kalan kısa artık parça duvar değil (yoksa ortada dikme gibi durur)
                 if sg[1] - sg[0] > (1 if (sg[2] and sg[3]) else 0.3 * PPM):
-                    ext = T / 2 * PPM
+                    # uç, birleştiği duvarın dış yüzüne kadar değil 4 mm içinde biter (eş düzlemli yüz pişirmede siyah şerit yapıyordu)
+                    ext = (T / 2 - 0.004) * PPM
                     t0 = sg[0] - (ext if sg[2] else 0); t1 = sg[1] + (ext if sg[3] else 0)
                     if bal:
                         # iki açık alan (teras/bahçe/havuz) arasındaki ya da bir odaya bitişik kenara korkuluk konmaz;
@@ -511,8 +512,19 @@ def build_floors():
         p = poly(r)
         poly_slab('plinth_' + r[0], offset_poly(p, 0.16 * PPM), -0.32, -0.02, M_PLINTH)
         poly_slab('plinthline_' + r[0], offset_poly(p, 0.164 * PPM), -0.36, -0.31, M_CAP)
+    sm = simple('screed', '#E7E5E1', 0.9)
     for r in PLAN['rooms']:
-        poly_slab('screed_' + r[0], offset_poly(poly(r), 0.1 * PPM), -0.03, -0.005, simple('screed', '#E7E5E1', 0.9))
+        poly_slab('screed_' + r[0], offset_poly(poly(r), 0.1 * PPM), -0.03, -0.005, sm)
+    # odaların kaide/şap prizmaları üst üste biniyor; çakışan eş düzlemli dış yüzler pişirmede siyah kare yapıyordu -> tek gövdede birleştir
+    for pre in ('plinth_', 'plinthline_', 'screed_'):
+        obs = [o for o in S.objects if o.name.startswith(pre)]
+        if len(obs) < 2: continue
+        base = obs[0]
+        for o in obs[1:]:
+            md = base.modifiers.new('u', 'BOOLEAN'); md.operation = 'UNION'; md.solver = 'EXACT'; md.object = o
+            bpy.context.view_layer.objects.active = base
+            bpy.ops.object.modifier_apply(modifier=md.name)
+            bpy.data.objects.remove(o, do_unlink=True)
     for r in PLAN['rooms']:
         p = poly(r); w = max(q[0] for q in p) - min(q[0] for q in p); h = max(q[1] for q in p) - min(q[1] for q in p)
         if r[3] == 'wood':
